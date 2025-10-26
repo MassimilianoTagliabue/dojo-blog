@@ -9,7 +9,7 @@ const useFetch = (url) => {
     //prendo i dati dall'API e li inserisco nello state data
     //prima di richiedere i dati, devo avviare il server (json-server --watch data/db.json --port 8000)
     useEffect(() => {
-        const abortCont = new AbortController();
+        const abortCont = new AbortController();    //creo un controller per abortare la richiesta se l'utente cambia pagina
 
         fetch(url, {signal: abortCont.signal})          //ogni volta che cambia l'URL, viene richiamato useEffect
             .then(res => {
@@ -30,7 +30,7 @@ const useFetch = (url) => {
                 setError(err.message);  //l'errore viene registrato nello state error
             });
 
-            return() => abortCont.abort();
+            return() => abortCont.abort();  
             
     }, [url]);
 
