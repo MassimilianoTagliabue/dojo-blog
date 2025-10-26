@@ -1,17 +1,28 @@
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const Create = () => {
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [author, setAuthor] = useState("mario");
+    const [isLoading, setIsLoading] = useState(false);
+    const history = useHistory();   //serve per salvare la cronologia della navigazione all'interno del sito
 
     const handleSubmit = (e) =>{
         e.preventDefault();     //impedisce che la pagina venga ricaricata al click del bottone
         const blog = {title, body, author};
 
-        console.log(blog);
+        setIsLoading(true)
         
-
+        fetch('http://localhost:8000/blogs',{
+            method: 'POST',     //indichiamo che vogliamo aggiungere dei dati
+            headers: {"Content-Type": "application/json"},   //indichiamo il tipo di contenuto (im questo caso json)
+            body: JSON.stringify(blog)      //trasformiamo i blog in formato JSON
+        }).then(() => {
+            console.log("nuovo blog aggiunto");
+            setIsLoading(false);
+            history.push("/")       //dopo aver caricato i dati l'utente verrà reindirizzato alla home
+        })
     }
 
     return ( 
@@ -42,7 +53,8 @@ const Create = () => {
                     <option value="yoshi">yoshi</option>
                 </select>
 
-                <button>Add Blog</button>
+                { !isLoading && <button>Add Blog</button>} {/*il bottone verrà mostrato solo se la condizione è falsa */}
+                { isLoading && <button>Adding Blog...</button>}
             </form>
         </div>
      );
