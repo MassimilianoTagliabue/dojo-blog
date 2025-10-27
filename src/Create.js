@@ -16,14 +16,14 @@ const Create = () => {
         
         fetch('http://localhost:8000/blogs',{
             method: 'POST',     //indichiamo che vogliamo aggiungere dei dati
-            headers: {"Content-Type": "application/json"},   //indichiamo il tipo di contenuto (im questo caso json)
+            headers: {"Content-Type": "application/json"},   //indichiamo il tipo di contenuto (in questo caso json)
             body: JSON.stringify(blog)      //trasformiamo i blog in formato JSON
         }).then(() => {
             console.log("nuovo blog aggiunto");
             setIsLoading(false);
             history.push("/")       //dopo aver caricato i dati l'utente verrà reindirizzato alla home
         })
-    }
+    }      //i dati verranno salvati nel file db.json, perciò anche se viene fatto ripartire il tutto non si cancelleranno
 
     return ( 
         <div className="create">
